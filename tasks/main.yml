@@ -1,0 +1,31 @@
+---
+# tasks file for glusterfs-ansible-role
+
+- name: Set fact glusterfs nodes list
+  set_fact:
+    glusterfs_nodes: "{{ ansible_play_hosts }}"
+  run_once: True
+  when: glusterfs_nodes is undefined
+ 
+- name: Install glusterfs
+  include: install-glusterfs-server.yml
+  when: ansible_os_family == "RedHat"
+
+- name: Configure glusterfs
+  include: configure-glusterfs-server.yml
+
+- name: Create volume(s)
+  include: create-volumes.yml
+  when: "{{ glusterfs_volumes }}"
+
+- name: Mount volume(s)
+  include: mount-volumes.yml
+  when: "{{ glusterfs_volumes }}"
+
+- name: Unmount volume(s)
+  include: unmount-volumes.yml
+  when: "{{ glusterfs_volumes }}"
+
+- name: Remove volume(s)
+  include: remove-volumes.yml
+  when: "{{ glusterfs_volumes }}"

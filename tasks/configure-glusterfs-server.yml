@@ -1,0 +1,19 @@
+---
+# tasks file for glusterfs-ansible-role
+
+- name: Configure glusterfs peers
+  shell: gluster peer probe {{ item }}
+  register: glusterfs_peer_probe
+  changed_when: "'already in peer list' not in glusterfs_peer_probe.stdout"
+  delegate_to: "{{ glusterfs_nodes[0] }}"
+  run_once: True
+  with_items: "{{ glusterfs_nodes }}"
+  when: >
+    item != glusterfs_nodes[0]
+
+- name: Get existing volumes list
+  shell: "gluster volume list"
+  changed_when: false
+  register: glusterfs_volume_list
+  delegate_to: "{{ glusterfs_nodes[0] }}"
+  run_once: True

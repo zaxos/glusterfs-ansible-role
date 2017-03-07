@@ -1,0 +1,19 @@
+---
+# defaults file for glusterfs-ansible-role
+
+glusterfs_version: "3.9"
+
+glusterfs_default_bricks_dir: /bricks
+
+glusterfs_volumes: []
+
+glusterfs_delete_bricks_dir_after_removal: True
+
+glusterfs_packages_EL:
+  - {package: "glusterfs"}
+  - {package: "glusterfs-cli"}
+  - {package: "glusterfs-libs"}
+  - {package: "glusterfs-server"}
+  - {package: "glusterfs-fuse"}
+  - {package: "glusterfs-geo-replication"}
+

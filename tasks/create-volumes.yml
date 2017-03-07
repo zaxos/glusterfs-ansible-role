@@ -1,0 +1,97 @@
+---
+# tasks file for glusterfs-ansible-role
+
+- name: Ensure bricks directories presence (1/2)
+  file:
+    name: "{{ glusterfs_default_bricks_dir }}"
+    state: directory
+  delegate_to: "{{ item[1] }}"
+  with_nested: 
+    - "{{ glusterfs_volumes }}"
+    - "{{ glusterfs_nodes }}"
+  when: >
+    item[0].state == 'present' and
+    (item[0].nodes is undefined or item[1] in item[0].nodes) and
+    item[0].bricks is undefined
+
+- name: Ensure bricks directories presence (2/2)
+  file:
+    name: "{{ item.1 }}"
+    state: directory
+  with_subelements:
+    - "{{ glusterfs_volumes }}"
+    - bricks
+    - skip_missing: True
+  when: >
+    item.0.state == 'present'
+
+- name: Create volume(s) with arbiter node
+  shell: >
+    gluster volume create {{ item.volume }} replica {{ item.replica }}  arbiter {{ item.arbiter }} transport {{ item.transport | default('tcp')}}
+    {% if item.bricks is defined -%}
+      {% for brick in item.bricks -%}
+        {% for node in item.nodes | default(glusterfs_nodes) -%}
+          {{ node }}:{{ brick + " "}}
+        {%- endfor %}
+      {%- endfor %}
+    {%- else %}
+      {% for node in item.nodes | default(glusterfs_nodes) -%}
+        {{ node }}:{{ glusterfs_default_bricks_dir }}/{{ item.volume + " " }}
+      {%- endfor %}
+    {%- endif -%}
+    {% if item.force is undefined or item.force == true or (item.bricks is defined and item.bricks|length > 1) -%}
+      force
+    {%- endif %}
+  delegate_to: "{{ glusterfs_nodes[0] }}"
+  run_once: True
+  register: glusterfs_volume_create
+  changed_when: "'success' in glusterfs_volume_create.stdout or 'successful' in glusterfs_volume_create.stdout"
+  with_items: "{{ glusterfs_volumes }}"
+  when: >
+    item.state == 'present' and
+    item.arbiter is defined and
+    item.volume not in glusterfs_volume_list.stdout
+
+- name: Configure volume(s) with arbiter node
+  shell: >
+    {% for opt in range (0,item.options.items() | length) -%}
+      gluster volume set {{ item.volume }} {{ item.options.keys()[opt] }} {{ item.options.values()[opt] }}
+    {% endfor %}
+  delegate_to: "{{ glusterfs_nodes[0] }}"
+  changed_when: glusterfs_volume_create|changed
+  run_once: True
+  with_items: "{{ glusterfs_volumes }}"
+  when: >
+    item.options is defined and
+    item.state == 'present' and
+    item.arbiter is defined
+
+- name: Create and configure volume(s) without arbiter node
+  gluster_volume:
+    name: "{{ item.volume }}"
+    cluster: "{% if item.nodes is defined %}{{ item.nodes }}{% else %}{{ glusterfs_nodes }}{% endif %}"
+    force: "{{ item.force | default('yes') }}"
+    transport: "{{ item.transport | default('tcp') }}"
+    state: present
+    replicas: "{{ item.replica | default(omit) }}"
+    stripes: "{{ item.stripe | default(omit) }}"
+    disperses: "{{ item.disperse | default(omit) }}"
+    redundancies: "{{ item.redundancy | default(omit) }}"
+    options: "{{ item.options | default(omit) }}"
+    brick: "{% if item.bricks is defined %}{{ item.bricks | join(',') }}{% else %}{{ glusterfs_default_bricks_dir }}/{{ item.volume }}{% endif %}"
+  delegate_to: "{{ glusterfs_nodes[0] }}"
+  run_once: True
+  with_items: "{{ glusterfs_volumes }}"
+  when: >
+    item.state == 'present' and 
+    (item.arbiter is undefined or item.arbiter == 0)
+
+- name: Start volume(s)
+  gluster_volume:
+    name: "{{ item.volume }}"
+    state: started
+  delegate_to: "{{ glusterfs_nodes[0] }}"
+  run_once: True
+  with_items: "{{ glusterfs_volumes }}"
+  when: >
+    item.state == 'present'
