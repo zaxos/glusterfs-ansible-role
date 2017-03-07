@@ -83,7 +83,6 @@ Example volume
     - ...
   options:  # optional, glusterfs volume options #
     nfs.disable: "off"
-    auth.reject: "10.10.10.*"
     ...
   mount:  # optional, mount volume in each node #
     path:  # required if mount: is defined #
