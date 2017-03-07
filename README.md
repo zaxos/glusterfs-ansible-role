@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/zaxos/glusterfs-ansible-role.svg?branch=master)](https://travis-ci.org/zaxos/guacamole-ansible-role)
-[![Ansible Galaxy](https://img.shields.io/badge/galaxy-_zaxos.glusterfs--ansible--role-blue.svg)](https://galaxy.ansible.com/zaxos/guacamole-ansible-role/)
+[![Build Status](https://travis-ci.org/zaxos/glusterfs-ansible-role.svg?branch=master)](https://travis-ci.org/zaxos/glusterfs-ansible-role)
+[![Ansible Galaxy](https://img.shields.io/badge/galaxy-_zaxos.glusterfs--ansible--role-blue.svg)](https://galaxy.ansible.com/zaxos/glusterfs-ansible-role/)
 
 glusterfs-ansible-role
 ======================
