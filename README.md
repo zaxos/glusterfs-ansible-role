@@ -19,7 +19,7 @@ $ ansible-galaxy install zaxos.glusterfs-ansible-role
 
 Example Inventory
 -----------------
-```yaml
+```
 [glusterfs_example_cluster]
 node1.glusterfs.example
 node2.glusterfs.example
