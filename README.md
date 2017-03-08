@@ -32,6 +32,7 @@ Example Playbook
 ```yaml
 - hosts: glusterfs_example_cluster
   vars:
+    glusterfs_version: "3.9"
     glusterfs_default_bricks_dir: /bricks
     glusterfs_volumes:
     - volume: volume1  # Replicated with arbiter node
@@ -72,7 +73,7 @@ Example volume
   redundancy:
   
   transport:  # optional, default is tcp #
-  force:  # optional, default is True #
+  force:  # optional, default is yes #
   nodes:  # optional, custom nodes list #
     - node1
     - node2
@@ -86,9 +87,10 @@ Example volume
     ...
   mount:  # optional, mount volume in each node #
     path:  # required if mount: is defined #
-    owner:  # optional, default "root" #
-    group:  # optional, default "root" #
-    mode:  # optional, default "0755" #
+    owner:  # optional, default is "root" #
+    group:  # optional, default is "root" #
+    mode:  # optional, default is "0755" #
+    options:  # optional, default is "defaults,_netdev,backupvolfile-server=..." #
 ```
 
 Role Variables
