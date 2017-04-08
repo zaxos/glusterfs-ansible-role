@@ -1,7 +1,7 @@
 ---
 # defaults file for glusterfs-ansible-role
 
-glusterfs_version: "3.9"
+glusterfs_version: "3.10"
 
 glusterfs_default_bricks_dir: /bricks
 
