@@ -10,7 +10,7 @@
     - "{{ glusterfs_volumes }}"
     - "{{ glusterfs_nodes }}"
   when: >
-    item[0].state == 'present' and
+    (item[0].state is not defined or item[0].state == 'present') and
     (item[0].nodes is undefined or item[1] in item[0].nodes) and
     item[0].bricks is undefined
 
@@ -23,7 +23,7 @@
     - bricks
     - skip_missing: True
   when: >
-    item.0.state == 'present'
+    item.0.state is not defined or item.0.state == 'present'
 
 - name: Create volume(s) with arbiter node
   shell: >
@@ -48,7 +48,7 @@
   changed_when: "'success' in glusterfs_volume_create.stdout or 'successful' in glusterfs_volume_create.stdout"
   with_items: "{{ glusterfs_volumes }}"
   when: >
-    item.state == 'present' and
+    (item.state is not defined or item.state == 'present' )and
     item.arbiter is defined and
     item.volume not in glusterfs_volume_list.stdout
 
@@ -63,7 +63,7 @@
   with_items: "{{ glusterfs_volumes }}"
   when: >
     item.options is defined and
-    item.state == 'present' and
+    (item.state is not defined or item.state == 'present') and
     item.arbiter is defined
 
 - name: Create and configure volume(s) without arbiter node
@@ -83,7 +83,7 @@
   run_once: True
   with_items: "{{ glusterfs_volumes }}"
   when: >
-    item.state == 'present' and 
+    (item.state is not defined or item.state == 'present') and 
     (item.arbiter is undefined or item.arbiter == 0)
 
 - name: Start volume(s)
@@ -94,4 +94,4 @@
   run_once: True
   with_items: "{{ glusterfs_volumes }}"
   when: >
-    item.state == 'present'
+    item.state is not defined or item.state == 'present'

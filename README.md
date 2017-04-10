@@ -63,7 +63,7 @@ Example volume
 --------------
 ```yaml
 - volume: example
-  state: present/absent  # required #
+  state: present/absent  # optional, default is 'present', set to 'absent' for removal #
   
   # Fill accordingly depending on the type of volume to be created #
   replica:

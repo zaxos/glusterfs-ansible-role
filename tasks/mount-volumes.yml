@@ -8,7 +8,7 @@
   with_items: "{{ glusterfs_volumes }}"
   when: >
     item.mount is defined and
-    item.state == 'present'
+    (item.state is not defined or item.state == 'present')
 
 - name: Mount volume(s)
   mount:
@@ -20,7 +20,7 @@
   with_items: "{{ glusterfs_volumes }}"
   when: >
     item.mount is defined and
-    item.state == 'present'
+    (item.state is not defined or item.state == 'present')
 
 - name: Ensure mount paths prermissions
   file:
@@ -32,4 +32,4 @@
   with_items: "{{ glusterfs_volumes }}"
   when: >
     item.mount is defined and
-    item.state == 'present'
+    (item.state is not defined or item.state == 'present')

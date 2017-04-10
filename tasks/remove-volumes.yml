@@ -9,10 +9,10 @@
   run_once: True
   with_items: "{{ glusterfs_volumes }}"
   when: >
-    item.state == 'absent' and
+    (item.state is defined and item.state == 'absent') and
     item.volume in glusterfs_volume_list.stdout
 
-- name: Ensure bricks directories presence (1/2)
+- name: Delete removed volume(s) bricks directories (1/2)
   file:
     name: "{{ glusterfs_default_bricks_dir }}/{{ item[0].volume }}"
     state: absent
@@ -22,7 +22,7 @@
     - "{{ glusterfs_nodes }}"
   when: >
     glusterfs_delete_bricks_dir_after_removal and
-    item[0].state == 'absent' and
+    (item[0].state is defined and item[0].state == 'absent') and
     (item[0].nodes is undefined or item[1] in item[0].nodes) and
     item[0].bricks is undefined
 
@@ -36,4 +36,4 @@
     - skip_missing: True
   when: >
     glusterfs_delete_bricks_dir_after_removal and
-    item.0.state == 'absent'
+    (item.0.state is defined and item.0.state == 'absent')

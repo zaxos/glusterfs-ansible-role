@@ -11,7 +11,7 @@
   with_items: "{{ glusterfs_volumes }}"
   when: >
     item.mount is defined and
-    item.state == 'absent'
+    (item.state is defined and item.state == 'absent')
 
 - name: Remove mount(s) from fstab
   mount:
@@ -23,5 +23,4 @@
   with_items: "{{ glusterfs_volumes }}"
   when: >
     item.mount is defined and
-    item.state == 'absent'
-
+    (item.state is defined and item.state == 'absent')
