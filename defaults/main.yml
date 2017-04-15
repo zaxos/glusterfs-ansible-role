@@ -7,6 +7,8 @@ glusterfs_default_bricks_dir: /bricks
 
 glusterfs_volumes: []
 
+glusterfs_auto_remount: True
+
 glusterfs_delete_bricks_dir_after_removal: True
 
 glusterfs_packages_EL:
