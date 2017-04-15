@@ -39,7 +39,7 @@
     item.mount is defined and
     (item.state is not defined or item.state == 'present')
 
-- name: Ensure mount paths prermissions
+- name: Ensure mount paths permissions
   file:
     path: "{{ item.mount.path }}"
     state: directory
