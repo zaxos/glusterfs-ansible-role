@@ -45,7 +45,7 @@
     state: directory
     owner: "{{ item.mount.owner | default ('root') }}"
     group: "{{ item.mount.group | default ('root') }}"
-    mode: "{{ item.mount.mode | default (0755) }}"
+    mode: "{{ item.mount.mode | default ('0755') }}"
   with_items: "{{ glusterfs_volumes }}"
   when: >
     item.mount is defined and
