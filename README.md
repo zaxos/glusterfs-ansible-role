@@ -48,7 +48,7 @@ Example Playbook
         - node2.glusterfs.example
         - node3.glusterfs.example
       options:
-        nfs.disable: "off"
+        performance.cache-size: 256MB
       mount:
         path: "/mnt/volume2"
         owner: exampleuser
@@ -83,7 +83,7 @@ Example volume
     - /../brick2
     - ...
   options:  # optional, glusterfs volume options #
-    nfs.disable: "off"
+    performance.cache-size: 256MB
     ...
   mount:  # optional, mount volume in each node #
     path:  # required if mount: is defined #

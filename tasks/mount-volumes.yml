@@ -4,16 +4,20 @@
 - name: Remove old mount point from fstab in case of change
   lineinfile:
     dest: /etc/fstab
-    regexp: "^{{ item.nodes[0] + ':/' + item.volume }} (?!.*{{ item.mount.path }} ).*"
+    regexp: "^{% if item.nodes is defined %}{{ item.nodes[0] + ':/' + item.volume }}{% else %}{{ glusterfs_nodes[0] + ':/' + item.volume }}{% endif %} (?!.*{{ item.mount.path }} ).*"
     state: absent
   register: regex_fstab
   with_items: "{{ glusterfs_volumes }}"
-  when: glusterfs_auto_remount
+  when: >
+    glusterfs_auto_remount and
+    item.mount.path is defined
 
 - name: Unmount old mount point in case of change
-  command: umount "{{ item.0.nodes[0] + ':/' + item.0.volume }}"
+  command: umount "{% if item.0.nodes is defined %}{{ item.0.nodes[0] + ':/' + item.0.volume }}{% else %}{{ glusterfs_nodes[0] + ':/' + item.0.volume }}{% endif %}"
   when: >
-    'line(s) removed' in item.1.msg and glusterfs_auto_remount
+    item.1.msg is defined and
+    'line(s) removed' in item.1.msg and 
+    glusterfs_auto_remount
   with_together:
     - "{{ glusterfs_volumes }}"
     - "{{ regex_fstab.results }}"
