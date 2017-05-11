@@ -11,6 +11,8 @@ glusterfs_auto_remount: True
 
 glusterfs_delete_bricks_dir_after_removal: True
 
+glusterfs_configure_firewalld: False
+
 glusterfs_packages_EL:
   - {package: "glusterfs"}
   - {package: "glusterfs-cli"}
@@ -18,4 +20,3 @@ glusterfs_packages_EL:
   - {package: "glusterfs-server"}
   - {package: "glusterfs-fuse"}
   - {package: "glusterfs-geo-replication"}
-

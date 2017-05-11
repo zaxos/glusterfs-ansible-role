@@ -11,6 +11,10 @@
   include: install-glusterfs-server.yml
   when: ansible_os_family == "RedHat"
 
+- name: Configure firewalld
+  include: configure-firewalld.yml
+  when: glusterfs_configure_firewalld
+
 - name: Configure glusterfs
   include: configure-glusterfs-server.yml
 

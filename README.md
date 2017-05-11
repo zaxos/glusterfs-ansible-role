@@ -34,6 +34,7 @@ Example Playbook
   vars:
     glusterfs_version: "3.10"
     glusterfs_default_bricks_dir: /bricks
+    glusterfs_configure_firewalld: True
     glusterfs_volumes:
     - volume: volume1  # Replicated with arbiter node
       state: present       
@@ -100,5 +101,6 @@ Some variables that require review:
 - `glusterfs_version`: GlusterFS version to be installed using CentOS Storage SIG Packages. Default is the currently latest available version "3.10". Latest stable version is "3.8".
 - `glusterfs_nodes`: List of nodes in GlusterFS cluster. By default this list is populated by the defined group in inventory (glusterfs_example_cluster in example inventory).
 - `glusterfs_volumes`: List of volumes.
-- `glusterfs_auto_remount`: Default value is "True". If set to "True", when the mount path of a volume is changed, the old mount path will be automatically unmounted and removed from fstab.
+- `glusterfs_configure_firewalld`: If set to "True", firewalld will be installed and properly configured. Default value is "False".
+- `glusterfs_auto_remount`: If set to "True", when the mount path of a volume is changed, the old mount path will be automatically unmounted and removed from fstab. Default value is "True".
 - `glusterfs_delete_bricks_dir_after_removal`: Default value is "True". Set this variable to "False" if you want to preserve volume brick directories in all nodes after a volume is removed (state: absent).

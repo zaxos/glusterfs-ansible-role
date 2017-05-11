@@ -1,0 +1,26 @@
+- name: Install firewalld
+  yum:
+    name: firewalld
+    state: present
+
+- name: Create firewalld configuration file for GlusterFS
+  template:
+    src: glusterfs.xml.j2
+    dest: /etc/firewalld/services/serviio.xml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Make sure firewalld service is running
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Configure firewalld
+  firewalld:
+    zone: public
+    service: glusterfs
+    state: enabled
+    permanent: True
+    immediate: True
