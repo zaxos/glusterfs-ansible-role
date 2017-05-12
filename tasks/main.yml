@@ -20,16 +20,16 @@
 
 - name: Create volume(s)
   include: create-volumes.yml
-  when: "{{ glusterfs_volumes }}"
+  when: glusterfs_volumes
 
 - name: Mount volume(s)
   include: mount-volumes.yml
-  when: "{{ glusterfs_volumes }}"
+  when: glusterfs_volumes
 
 - name: Unmount volume(s)
   include: unmount-volumes.yml
-  when: "{{ glusterfs_volumes }}"
+  when: glusterfs_volumes
 
 - name: Remove volume(s)
   include: remove-volumes.yml
-  when: "{{ glusterfs_volumes }}"
+  when: glusterfs_volumes
