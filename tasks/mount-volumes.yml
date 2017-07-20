@@ -10,7 +10,7 @@
   with_items: "{{ glusterfs_volumes }}"
   when: >
     glusterfs_auto_remount and
-    item.mount.path is defined
+    item.mount is defined
 
 - name: Unmount old mount point in case of change
   command: umount "{% if item.0.nodes is defined %}{{ item.0.nodes[0] + ':/' + item.0.volume }}{% else %}{{ glusterfs_nodes[0] + ':/' + item.0.volume }}{% endif %}"
