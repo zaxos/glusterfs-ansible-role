@@ -98,7 +98,7 @@ Role Variables
 --------------
 Some variables that require review:
 - `glusterfs_default_bricks_dir`: Default directory for brick storage. Each volume will create its own subdirectory e.g. "/bricks/volume1".
-- `glusterfs_version`: GlusterFS version to be installed using CentOS Storage SIG Packages. Default is the currently latest available version "3.10". Latest stable version is "3.8".
+- `glusterfs_version`: GlusterFS version to be installed using CentOS Storage SIG Packages. Latest stable version is "3.10".
 - `glusterfs_nodes`: List of nodes in GlusterFS cluster. By default this list is populated by the defined group in inventory (glusterfs_example_cluster in example inventory).
 - `glusterfs_volumes`: List of volumes.
 - `glusterfs_configure_firewalld`: If set to "True", firewalld will be installed and properly configured. Default value is "False".
