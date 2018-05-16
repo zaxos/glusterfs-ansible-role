@@ -8,7 +8,7 @@ Ansible role to install and configure GlusterFS.
 
 Requirements
 ------------
-* centos/rhel 7
+* centos 7
 * ansible >= 2.2
 
 Installation
